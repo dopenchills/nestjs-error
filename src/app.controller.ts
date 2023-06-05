@@ -9,12 +9,12 @@ export class AppController {
    * Guideline: use try-catch as guard in controller
    */
   @Get(':id')
-  getHello(@Param('id') id: string): number {
+  getHello(@Param('id') id: string): string {
     if(id.includes('-')) {
       throw new BadRequestException('id should not include hyphen');
     }
 
-    return 0;
+    return id;
   }
 }
 
