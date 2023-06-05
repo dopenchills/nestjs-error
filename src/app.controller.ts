@@ -6,14 +6,17 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   /**
-   * Guideline: Throw HTTPException in controller
+   * Guideline: Both throw HTTPException and log error in controller
    */
   @Get()
   getHello(): number {
     try {
       throw new Error("Something bad happened");
     } catch (error) {
-      // throw HTTPException
+      // log error (for server-side developer)
+      console.error(error);
+
+      // throw HTTPException (for client)
       throw new InternalServerErrorException("There is a problem in the server side.");
     }
   }
@@ -23,11 +26,26 @@ export class AppController {
  * 
  * The code above returns below.
  * 
- * This is readable for the client side
+ * This is readable for the client side.
  * 
  * {
     "statusCode": 500,
     "message": "There is a problem in the server side.",
     "error": "Internal Server Error"
   }
+ * 
+ * This logic also logs good information about error as below
+ * 
+ * Error: Something bad happened
+    at AppController.getHello (/Users/ryosakaguchi/dev/lab/nestjs-error/src/app.controller.ts:14:13)
+    at /Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/@nestjs/core/router/router-execution-context.js:38:29
+    at InterceptorsConsumer.intercept (/Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/@nestjs/core/interceptors/interceptors-consumer.js:11:20)
+    at /Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/@nestjs/core/router/router-execution-context.js:46:60
+    at /Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/@nestjs/core/router/router-proxy.js:9:23
+    at Layer.handle [as handle_request] (/Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/express/lib/router/route.js:144:13)
+    at Route.dispatch (/Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/express/lib/router/route.js:114:3)
+    at Layer.handle [as handle_request] (/Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/ryosakaguchi/dev/lab/nestjs-error/node_modules/express/lib/router/index.js:284:15
+ * 
  */
