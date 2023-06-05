@@ -24,5 +24,11 @@ export class AppController {
  * 
  * This is because, the error is handled in the service side in a wrong way (simple try-catch).
  * 
- * If we do not write simple try-catch in the service side, it returns Exception as expected.
+ * If we do not write simple try-catch in the service side, it returns Exception as expected like below:
+ * 
+ * {
+      "statusCode": 500,
+      "message": "something was wrong in the logic",
+      "error": "Internal Server Error"
+    }
  */
